@@ -140,13 +140,30 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 16),
-            Text('Loading...'),
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF2F7FF),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF005BFE)),
+                strokeWidth: 3,
+              ),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'Chargement...',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF04132C),
+              ),
+            ),
           ],
         ),
       );
@@ -154,95 +171,209 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
     if (_error != null) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.error, color: Colors.red, size: 64),
-            SizedBox(height: 16),
-            Text('Error: $_error'),
-            ElevatedButton(
-              onPressed: _refreshData,
-              child: Text('Retry'),
-            ),
-          ],
+        child: Container(
+          margin: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(32),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFF5F5),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFFFF5A2E).withOpacity(0.3)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFE5E5),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Icon(
+                  Icons.error_outline,
+                  color: Color(0xFFFF5A2E),
+                  size: 48,
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Une erreur s\'est produite',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF04132C),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                _error!,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF818995),
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                onPressed: _refreshData,
+                icon: const Icon(Icons.refresh_rounded, size: 18),
+                label: const Text(
+                  'Réessayer',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF005BFE),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
 
     return RefreshIndicator(
       onRefresh: _refreshData,
+      color: const Color(0xFF005BFE),
+      backgroundColor: Colors.white,
       child: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Stats Row
             Row(
               children: [
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: const Color.fromRGBO(242, 243, 244, 1),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    height: 150,
-                    padding: EdgeInsets.all(12),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '$expectanswer',
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.w700),
-                          ),
-                          const Text(
-                            'Réponse(s) attendue(s)',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w700),
-                          ),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          const Color(0xFF005BFE),
+                          const Color(0xFF0048CC),
                         ],
                       ),
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF005BFE).withOpacity(0.2),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(
+                            Icons.pending_actions,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          '$expectanswer',
+                          style: const TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                            height: 1.1,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Réponse(s)\nattendue(s)',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white.withOpacity(0.9),
+                            height: 1.3,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: const Color.fromRGBO(242, 243, 244, 1),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    height: 150,
-                    padding: EdgeInsets.all(10),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '$totalsessions',
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.w700),
-                          ),
-                          const Text(
-                            'Session(s) cette semaine',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w700),
-                          ),
-                          const Text(
-                            'Prochaine demain 09h30mn',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w700),
-                          ),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          const Color(0xFFFDBF00),
+                          const Color(0xFFE5AB00),
                         ],
                       ),
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFFFDBF00).withOpacity(0.2),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF04132C).withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(
+                            Icons.calendar_today,
+                            color: Color(0xFF04132C),
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          '$totalsessions',
+                          style: const TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.w800,
+                            color: Color(0xFF04132C),
+                            height: 1.1,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        const Text(
+                          'Session(s)\ncette semaine',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF04132C),
+                            height: 1.3,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -251,35 +382,51 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
             const SizedBox(height: 24),
 
-            // En attente section
             Container(
               decoration: BoxDecoration(
-                color: const Color.fromRGBO(255, 255, 255, 1),
-                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFFE6E7EA)),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
+                    color: Colors.black.withOpacity(0.04),
+                    blurRadius: 12,
                     offset: const Offset(0, 2),
                   ),
                 ],
               ),
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  const Row(
+                  Row(
                     children: [
-                      Text(
-                        'En attente de votre réponse',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF2F7FF),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.access_time_rounded,
+                          color: Color(0xFF005BFE),
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Text(
+                          'En attente de votre réponse',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF04132C),
+                            letterSpacing: -0.4,
+                          ),
                         ),
                       ),
                     ],
                   ),
+                  const SizedBox(height: 16),
                   if (missions.isNotEmpty) ...[
                     ...missions.map((mission) {
                       return WelcomeMission(mission, "welcome");
@@ -292,32 +439,46 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
             const SizedBox(height: 24),
 
-            // Sessions section
             Container(
               decoration: BoxDecoration(
-                color: const Color.fromRGBO(255, 255, 255, 1),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Color.fromRGBO(230, 231, 234, 1)),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFFE6E7EA)),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
+                    color: Colors.black.withOpacity(0.04),
+                    blurRadius: 12,
                     offset: const Offset(0, 2),
                   ),
                 ],
               ),
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  const Row(
+                  Row(
                     children: [
-                      Text(
-                        'Vos prochaines sessions',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFF9E6),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.event_note_rounded,
+                          color: Color(0xFFFDBF00),
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Text(
+                          'Vos prochaines sessions',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF04132C),
+                            letterSpacing: -0.4,
+                          ),
                         ),
                       ),
                     ],
@@ -329,8 +490,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     }).toList(),
                     Container(
                       width: double.infinity,
-                      margin: EdgeInsets.only(top: 16),
-                      child: ElevatedButton(
+                      margin: const EdgeInsets.only(top: 16),
+                      child: ElevatedButton.icon(
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,
@@ -339,25 +500,22 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             ),
                           );
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          elevation: 0,
-                          side: const BorderSide(
-                            color: Color.fromRGBO(4, 19, 44, 1),
-                            width: 2,
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                        icon: const Icon(Icons.arrow_forward_rounded, size: 18),
+                        label: const Text(
+                          'Voir toutes les sessions',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -0.3,
                           ),
                         ),
-                        child: const Text(
-                          'Voir toutes les missions',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w900,
-                            color: Color.fromRGBO(4, 19, 44, 1),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF005BFE),
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                       ),
@@ -376,91 +534,80 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget _buildNoMissionsWidget() {
     return Container(
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(255, 255, 255, 1),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Color.fromRGBO(230, 231, 234, 1)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        color: const Color(0xFFF8F9FA),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE6E7EA)),
       ),
-      margin: EdgeInsets.only(top: 16),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
+      margin: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: const Color(0xFFF2F7FF),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Icon(
+              Icons.check_circle_outline,
+              size: 40,
+              color: Color(0xFF005BFE),
+            ),
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            'Aucune mission en attente',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF04132C),
+              letterSpacing: -0.44,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'De nouvelles opportunités arriveront bientôt',
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xFF818995),
+              fontWeight: FontWeight.w500,
+              height: 1.5,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: const Color(0xFF005BFE),
+                elevation: 0,
+                side: const BorderSide(
+                  color: Color(0xFFE6E7EA),
+                  width: 1.5,
                 ),
-                child: SvgPicture.asset(
-                  'assets/icons/icon9.svg',
-                  height: 24,
-                  width: 24,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
+                padding: const EdgeInsets.symmetric(vertical: 16),
               ),
-              const SizedBox(height: 32),
-              const Text(
-                'Aucune mission en attente',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Color.fromRGBO(4, 19, 44, 1),
-                  letterSpacing: -0.44,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                'De nouvelles opportunités arriveront bientôt',
+              onPressed: _refreshData,
+              icon: const Icon(Icons.refresh_rounded, size: 18),
+              label: const Text(
+                'Actualiser',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Color.fromRGBO(129, 137, 149, 1),
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: -0.4,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 40),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    elevation: 0,
-                    side: BorderSide(
-                      color: Color.fromRGBO(4, 19, 44, 1),
-                      width: 2,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  onPressed: _refreshData,
-                  child: const Text(
-                    'Actualiser',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Color.fromRGBO(4, 19, 44, 1),
-                      letterSpacing: -0.44,
-                    ),
-                  ),
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -0.3,
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -468,91 +615,76 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget _buildNoSessionsWidget() {
     return Container(
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(255, 255, 255, 1),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Color.fromRGBO(230, 231, 234, 1)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        color: const Color(0xFFFFFBF0),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFFDBF00).withOpacity(0.3)),
       ),
-      margin: EdgeInsets.only(top: 16),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
+      margin: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFF9E6),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Icon(
+              Icons.event_available_outlined,
+              size: 40,
+              color: Color(0xFFFDBF00),
+            ),
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            'Aucune session planifiée',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF04132C),
+              letterSpacing: -0.44,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Acceptez des missions pour voir vos sessions ici',
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xFF818995),
+              fontWeight: FontWeight.w500,
+              height: 1.5,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF005BFE),
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: SvgPicture.asset(
-                  'assets/icons/icon10.svg',
-                  height: 24,
-                  width: 24,
-                ),
+                padding: const EdgeInsets.symmetric(vertical: 16),
               ),
-              const SizedBox(height: 32),
-              const Text(
-                'Aucune session planifiée',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Color.fromRGBO(4, 19, 44, 1),
-                  letterSpacing: -0.44,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                'Acceptez des missions pour voir vos sessions ici',
+              onPressed: _refreshData,
+              icon: const Icon(Icons.search_rounded, size: 18),
+              label: const Text(
+                'Voir toutes les missions',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Color.fromRGBO(129, 137, 149, 1),
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: -0.4,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 40),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    elevation: 0,
-                    side: BorderSide(
-                      color: Color.fromRGBO(4, 19, 44, 1),
-                      width: 2,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  onPressed: _refreshData,
-                  child: const Text(
-                    'Voir toutes les missions',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Color.fromRGBO(4, 19, 44, 1),
-                      letterSpacing: -0.44,
-                    ),
-                  ),
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -0.3,
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

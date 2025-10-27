@@ -233,18 +233,39 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey[600],
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        selectedFontSize: 12,
-        unselectedFontSize: 12,
-        items: [
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 16,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: SafeArea(
+          child: BottomNavigationBar(
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.white,
+            selectedItemColor: const Color(0xFF005BFE),
+            unselectedItemColor: const Color(0xFF818995),
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            selectedFontSize: 11,
+            unselectedFontSize: 11,
+            selectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w700,
+              height: 1.5,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w500,
+              height: 1.5,
+            ),
+            elevation: 0,
+            items: [
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/welcome.svg',
@@ -320,6 +341,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Messagerie',
           ),
         ],
+          ),
+        ),
       ),
     );
   }
